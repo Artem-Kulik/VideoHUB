@@ -12,7 +12,7 @@ public class User {
     private String name;
     @Column(name="password", nullable = false, length = 250)
     private String password;
-    @Column(name="icon", nullable = false, length = 250)
+    @Column(name="icon", nullable = false, length = 1024)
     private String icon;
 
     public User() {
