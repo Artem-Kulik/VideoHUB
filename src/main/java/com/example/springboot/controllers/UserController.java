@@ -28,4 +28,15 @@ public class UserController {
         repository.save(user);
         return "Success!";
     }
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable int id,@RequestBody User user) {
+        user.setId(id);
+        repository.save(user);
+        return "Success!";
+    }
+    @DeleteMapping("/remove/{id}")
+    public String remove(@PathVariable int id) {
+        repository.delete(repository.findById(id).get());
+        return "Success!";
+    }
 }
