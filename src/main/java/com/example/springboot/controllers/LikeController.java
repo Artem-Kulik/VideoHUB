@@ -1,27 +1,28 @@
 package com.example.springboot.controllers;
 
-import com.example.springboot.models.Channel;
-import com.example.springboot.models.User;
-import com.example.springboot.repositories.ChannelRepository;
+import com.example.springboot.models.Like;
+import com.example.springboot.models.Video;
+import com.example.springboot.repositories.LikeRepository;
+import com.example.springboot.repositories.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/channel")
-public class ChannelController {
-    private final ChannelRepository repository;
+@RequestMapping("/like")
+public class LikeController {
+    private final LikeRepository repository;
     @Autowired
-    public ChannelController(ChannelRepository repository) {
+    public LikeController(LikeRepository repository) {
         this.repository = repository;
     }
     @GetMapping("/getall")
-    public List<Channel> index() {
-        return (List<Channel>) repository.findAll();
+    public List<Like> index() {
+        return (List<Like>) repository.findAll();
     }
     @GetMapping("/get/{id}")
-    public Channel getById(@PathVariable int id) {
+    public Like getById(@PathVariable int id) {
         return repository.findById(id).get();
     }
     //@GetMapping("/getname/{id}")
@@ -29,14 +30,14 @@ public class ChannelController {
     //    return repository.find(id).get();
     //}
     @PostMapping("/add")
-    public String add(@RequestBody Channel channel) {
-        repository.save(channel);
+    public String add(@RequestBody Like like) {
+        repository.save(like);
         return "Success!";
     }
     @PostMapping("/update/{id}")
-    public String update(@PathVariable int id,@RequestBody Channel channel) {
-        channel.setId(id);
-        repository.save(channel);
+    public String update(@PathVariable int id,@RequestBody Like like) {
+        like.setId(id);
+        repository.save(like);
         return "Success!";
     }
     @DeleteMapping("/remove/{id}")
