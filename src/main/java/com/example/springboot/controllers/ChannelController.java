@@ -16,6 +16,7 @@ public class ChannelController {
     public ChannelController(ChannelRepository repository) {
         this.repository = repository;
     }
+
     @GetMapping("/getall")
     public List<Channel> index() {
         return (List<Channel>) repository.findAll();
