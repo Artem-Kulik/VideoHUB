@@ -1,5 +1,11 @@
 package com.example.springboot.models;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="tbl_users")
@@ -15,12 +21,22 @@ public class User {
     @Column(name="icon", nullable = false, length = 1024)
     private String icon;
 
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(
+            name="tblUserRoles",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="id")})
+
+    private List<Role> roles;
+
     public User() {
+        roles=new ArrayList<Role>();
     }
 
-    public User(String name, String password, String icon) {
-        this.name = name;
+    public User(String username, String password, String icon) {
+        this.name = username;
         this.password = password;
+        roles=new ArrayList<Role>();
         this.icon = icon;
     }
 
@@ -50,6 +66,7 @@ public class User {
     public String getName() {
         return name;
     }
+    public  List<Role> getRoles() {return roles;}
     public void setName(String name) {
         this.name = name;
     }

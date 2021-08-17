@@ -1,7 +1,7 @@
 package com.example.springboot.configure.security;
 
 import com.example.springboot.constants.Roles;
-import com.example.springboot.services.UserService;
+import com.example.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -68,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Set permissions on endpoints
         http.authorizeRequests()
                 // Swagger endpoints must be publicly accessible
-                .antMatchers("/").hasAuthority(Roles.Admin)
+                //.antMatchers("/").hasAuthority(Roles.Admin)
                 .antMatchers(String.format("%s/", restApiDocPath)).permitAll()
                 .antMatchers(String.format("%s/", swaggerPath)).permitAll()
                 // Our public endpoints

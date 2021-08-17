@@ -1,3 +1,5 @@
+package com.example.springboot.service;
+
 import com.example.springboot.models.User;
 import com.example.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByName(username);
         if(user==null)
             throw new UsernameNotFoundException("Email "+ username +" not found");
         return new org.springframework

@@ -5,6 +5,7 @@ import com.example.springboot.repositories.UserRepository;
 import com.example.springboot.storage.StorageService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +17,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
 
 //import static jdk.jpackage.internal.IOUtils.*;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController  {
     private final UserRepository repository;
     private final StorageService service;
     @Autowired
@@ -32,11 +34,11 @@ public class UserController {
     }
     @GetMapping("/users")
     public List<User> index() {
-        return (List<User>) repository.findAll();
+        return (List<User>) repository.findAll().stream();
     }
     @GetMapping("/get/{id}")
     public User getById(@PathVariable int id) {
-        return repository.findById(id).get();
+        return repository.findById((long) id).get();
     }
     @PostMapping("/add")
     public String add(@RequestBody User user) {
@@ -46,7 +48,7 @@ public class UserController {
     @GetMapping(value = "/image/{id}")
     public @ResponseBody
     URL getImage(@PathVariable int id) throws IOException {
-        User user = repository.findById(id).get();
+        User user = repository.findById((long) id).get();
         Resource file = service.loadAsResource(user.getIcon());
         return file.getURL();
     }
@@ -54,7 +56,7 @@ public class UserController {
     @PostMapping("/add-icon/{id}")
     public String icon(@PathVariable int id,@RequestParam("file") MultipartFile file){
         service.store(file);
-        User user=repository.findById(id).get();
+        User user=repository.findById((long) id).get();
         user.setIcon(file.getOriginalFilename());
         repository.save(user);
         return file.getOriginalFilename();
@@ -67,7 +69,7 @@ public class UserController {
     }
     @DeleteMapping("/remove/{id}")
     public String remove(@PathVariable int id) {
-        repository.delete(repository.findById(id).get());
+        repository.delete(repository.findById((long) id).get());
         return "Success!";
     }
 }
