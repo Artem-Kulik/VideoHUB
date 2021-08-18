@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -85,8 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(String.format("%s/", restApiDocPath)).permitAll()
                 .antMatchers(String.format("%s/", swaggerPath)).permitAll()
                 // Our public endpoints
-//                .antMatchers("/api/public/").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/author/").permitAll()
+                    .antMatchers("/auth/login").permitAll()
+                    .antMatchers("/user/users").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
 //                .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()
@@ -100,7 +101,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Add JWT token filter
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
+    @Override @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
 
 }

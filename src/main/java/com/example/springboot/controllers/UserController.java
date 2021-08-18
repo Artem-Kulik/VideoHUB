@@ -34,7 +34,7 @@ public class UserController  {
     }
     @GetMapping("/users")
     public List<User> index() {
-        return (List<User>) repository.findAll().stream();
+        return (List<User>) repository.findAll();
     }
     @GetMapping("/get/{id}")
     public User getById(@PathVariable int id) {
