@@ -61,6 +61,14 @@ public class UserController  {
         repository.save(user);
         return file.getOriginalFilename();
     }
+    @GetMapping("/files/{filename}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        Resource file = service.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "filename=\"" + file.getFilename() + "\"").body(file);
+
+    }
     @PostMapping("/update/{id}")
     public String update(@PathVariable int id,@RequestBody User user) {
         user.setId(id);
