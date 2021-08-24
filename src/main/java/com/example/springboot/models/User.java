@@ -18,6 +18,13 @@ public class User {
     private String name;
     @Column(name="password", nullable = false, length = 250)
     private String password;
+    @Column(name="birthday", nullable = false, length = 250)
+    private String birthday;
+    @Column(name="gender", nullable = false, length = 250)
+    private String gender;
+    @Column(name="phone", nullable = false, length = 250)
+    private String phone;
+
     @Column(name="icon", nullable = false, length = 1024)
     private String icon;
 
@@ -33,11 +40,49 @@ public class User {
         roles=new ArrayList<Role>();
     }
 
-    public User(String username, String password, String icon) {
-        this.name = username;
+    public User(String name, String password, String birthday, String gender, String phone, String icon, List<Role> roles) {
+        this.name = name;
         this.password = password;
-        roles=new ArrayList<Role>();
+        this.birthday = birthday;
+        this.gender = gender;
+        this.phone = phone;
         this.icon = icon;
+        roles=new ArrayList<Role>();
+    }
+
+
+
+    public String getGender() {
+        return gender;
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getIcon() {

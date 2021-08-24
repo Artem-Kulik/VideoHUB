@@ -3,6 +3,7 @@ package com.example.springboot.controllers;
 import com.example.springboot.configure.security.JwtTokenUtil;
 import com.example.springboot.dto.AuthRequest;
 import com.example.springboot.dto.UserView;
+import com.example.springboot.models.Role;
 import org.springframework.security.core.userdetails.User;
 import com.example.springboot.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,33 @@ public class AuthApi {
             return ResponseEntity.ok()
                     .header(HttpHeaders.AUTHORIZATION, tkn)
                     .body(userView);
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("register")
+    public ResponseEntity register(@RequestBody @Valid UserView newuser) {
+        try {
+            com.example.springboot.models.User dbUser = userRepository
+                    .findByName(newuser.getName());
+
+            if(dbUser == null){
+                dbUser = new com.example.springboot.models.User(
+                        newuser.getName(),
+                        newuser.getPassword(),
+                        newuser.getBirthday(),
+                        newuser.getGender(),
+                        newuser.getPhone(),
+                        newuser.getIcon(),
+                        newuser.getRoles());
+
+                userRepository.save(dbUser);
+                return (ResponseEntity) ResponseEntity.ok();
+            }
+            else{
+                return (ResponseEntity) ResponseEntity.badRequest();
+            }
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
