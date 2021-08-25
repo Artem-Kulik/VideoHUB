@@ -1,11 +1,21 @@
 package com.example.springboot.dto;
 
-public class RegisterRequest {
-    private String name;
-    private String password;
-    private String icon;
+import lombok.Data;
 
-    private String birthday;
-    private String gender;
+import javax.validation.constraints.NotNull;
+
+@Data
+public class RegisterRequest {
+    @NotNull
+    private String name;
+    @NotNull
+    private String password;
+    @NotNull
+    private String re_password;
+    @NotNull
     private String phone;
+    @NotNull
+    private String birthday;
+    @NotNull
+    private String gender;
 }
