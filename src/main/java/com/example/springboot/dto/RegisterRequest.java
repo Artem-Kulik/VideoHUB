@@ -3,6 +3,7 @@ package com.example.springboot.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 public class RegisterRequest {
@@ -15,7 +16,7 @@ public class RegisterRequest {
     @NotNull
     private String phone;
     @NotNull
-    private String birthday;
+    private Date birthday;
     @NotNull
     private String gender;
 }

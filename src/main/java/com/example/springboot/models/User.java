@@ -5,6 +5,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,11 +22,11 @@ public class User {
     @Column(name="icon", nullable = false, length = 1024)
     private String icon;
 
-    @Column(name="icon", nullable = false, length = 1024)
+    @Column(name="phone", nullable = false, length = 1024)
     private String phone;
-    @Column(name="icon", nullable = false, length = 1024)
-    private String birthday;
-    @Column(name="icon", nullable = false, length = 1024)
+    @Column(name="birthday", nullable = false)
+    private Date birthday;
+    @Column(name="gender", nullable = false, length = 1024)
     private String gender;
 
 
@@ -34,14 +35,13 @@ public class User {
             name="tblUserRoles",
             joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="id")},
             inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="id")})
-
     private List<Role> roles;
 
     public User() {
         roles=new ArrayList<Role>();
     }
 
-    public User(String name, String password, String icon, String phone, String birthday, String gender) {
+    public User(String name, String password, String icon, String phone, Date birthday, String gender,Role role) {
         this.name = name;
         this.password = password;
         this.icon = icon;
@@ -49,6 +49,7 @@ public class User {
         this.birthday = birthday;
         this.gender = gender;
         roles=new ArrayList<Role>();
+        roles.add(role);
     }
 
     public String getPhone() {
@@ -59,11 +60,11 @@ public class User {
         this.phone = phone;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
