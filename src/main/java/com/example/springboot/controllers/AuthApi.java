@@ -50,5 +50,33 @@ public class AuthApi {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+    @PostMapping("register")
+    public ResponseEntity register(@RequestBody @Valid UserView newuser) {
+        try {
+            com.example.springboot.models.User dbUser = userRepository
+                    .findByName(newuser.getName());
+
+            if(dbUser == null){
+                dbUser = new com.example.springboot.models.User(
+                        newuser.getName(),
+                        newuser.getPassword(),
+                        newuser.getBirthday(),
+                        newuser.getGender(),
+                        newuser.getPhone(),
+                        newuser.getIcon(),
+                        newuser.getRoles());
+
+                userRepository.save(dbUser);
+                return (ResponseEntity) ResponseEntity.ok();
+            }
+            else{
+                return (ResponseEntity) ResponseEntity.badRequest();
+            }
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+}
 
 }
