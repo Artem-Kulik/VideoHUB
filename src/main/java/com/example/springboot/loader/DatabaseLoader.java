@@ -36,7 +36,7 @@ public class DatabaseLoader implements CommandLineRunner {
         if(this.userRepository.count()==0)
         {
             this.userRepository.save(
-                    new User("semen@gmail.com",passwordEncoder.encode("123456"), "blabla")
+                    new User("semen@gmail.com",passwordEncoder.encode("123456"), "icon", "+38-068-000-00-00", "01.01.2000", "male")
             );
         }
     }

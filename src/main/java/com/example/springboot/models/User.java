@@ -21,6 +21,14 @@ public class User {
     @Column(name="icon", nullable = false, length = 1024)
     private String icon;
 
+    @Column(name="icon", nullable = false, length = 1024)
+    private String phone;
+    @Column(name="icon", nullable = false, length = 1024)
+    private String birthday;
+    @Column(name="icon", nullable = false, length = 1024)
+    private String gender;
+
+
     @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(
             name="tblUserRoles",
@@ -33,11 +41,38 @@ public class User {
         roles=new ArrayList<Role>();
     }
 
-    public User(String username, String password, String icon) {
-        this.name = username;
+    public User(String name, String password, String icon, String phone, String birthday, String gender) {
+        this.name = name;
         this.password = password;
-        roles=new ArrayList<Role>();
         this.icon = icon;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.gender = gender;
+        roles=new ArrayList<Role>();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getIcon() {
