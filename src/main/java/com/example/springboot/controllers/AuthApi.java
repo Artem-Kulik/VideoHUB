@@ -4,6 +4,7 @@ import com.example.springboot.configure.security.JwtTokenUtil;
 import com.example.springboot.constants.Roles;
 import com.example.springboot.dto.AuthRequest;
 import com.example.springboot.dto.RegisterRequest;
+import com.example.springboot.dto.ResponseDto;
 import com.example.springboot.dto.UserView;
 import com.example.springboot.models.Role;
 import com.example.springboot.repositories.RoleRepository;
@@ -76,10 +77,10 @@ public class AuthApi {
                         );
 
                 userRepository.save(dbUser);
-                return (ResponseEntity) ResponseEntity.ok();
+                return ResponseEntity.status(HttpStatus.OK).build();
             }
             else{
-                return (ResponseEntity) ResponseEntity.badRequest();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
