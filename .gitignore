@@ -18,3 +18,5 @@ target/
 node_modules/
 package-lock.json
 upload-dir/1.mp4.crdownload
+upload-dir/1.mp4
+upload-dir/2.mp4

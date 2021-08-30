@@ -14,7 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private long id;
     @Column(name="name", nullable = false, length = 250)
     private String name;
     @Column(name="password", nullable = false, length = 250)
@@ -29,6 +29,9 @@ public class User {
     @Column(name="gender", nullable = false, length = 1024)
     private String gender;
 
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="tbl_channel",referencedColumnName = "id")
+    private Channel channel;
 
     @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(
@@ -92,10 +95,10 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

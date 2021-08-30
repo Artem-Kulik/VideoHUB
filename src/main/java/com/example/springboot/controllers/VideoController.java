@@ -3,8 +3,14 @@ package com.example.springboot.controllers;
 import com.example.springboot.models.Channel;
 import com.example.springboot.models.Video;
 import com.example.springboot.repositories.ChannelRepository;
+import com.example.springboot.repositories.UserRepository;
 import com.example.springboot.repositories.VideoRepository;
+import com.example.springboot.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +19,11 @@ import java.util.List;
 @RequestMapping("/video")
 public class VideoController {
     private final VideoRepository repository;
+    private final StorageService service;
     @Autowired
-    public VideoController(VideoRepository repository) {
+    public VideoController(VideoRepository repository, StorageService service) {
         this.repository = repository;
+        this.service = service;
     }
     @GetMapping("/getall")
     public List<Video> index() {
@@ -44,5 +52,15 @@ public class VideoController {
     public String remove(@PathVariable int id) {
         repository.delete(repository.findById(id).get());
         return "Success!";
+    }
+    @GetMapping("/files/{filename}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        Resource file = service.loadAsResource(filename);
+        return ResponseEntity.ok()
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .header(HttpHeaders.CONTENT_DISPOSITION,
+                "filename=\"" + file.getFilename() + "\"").body(file);
+
     }
 }

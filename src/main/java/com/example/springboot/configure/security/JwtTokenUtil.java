@@ -42,7 +42,7 @@ public class JwtTokenUtil {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return claims.getSubject().split(",")[1];
+        return (String) claims.get("name");
     }
 
     public Date getExpirationDate(String token) {

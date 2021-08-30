@@ -17,7 +17,7 @@ public class Video {
     private String description;
     @Column(name="preview", nullable = false, length = 1024)
     private String preview;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_channel",referencedColumnName = "id")
     private Channel channel;
 
