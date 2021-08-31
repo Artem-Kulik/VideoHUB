@@ -1,5 +1,6 @@
 package com.example.springboot.controllers;
 
+import com.example.springboot.dto.VideoDto;
 import com.example.springboot.models.Channel;
 import com.example.springboot.models.Video;
 import com.example.springboot.repositories.ChannelRepository;
@@ -30,8 +31,9 @@ public class VideoController {
         return (List<Video>) repository.findAll();
     }
     @GetMapping("/get/{id}")
-    public Video getById(@PathVariable int id) {
-        return repository.findById(id).get();
+    public VideoDto getById(@PathVariable int id) {
+        Video vid=repository.findById(id).get();
+        return new VideoDto(vid.getId(),vid.getSrc(),vid.getTitle(),vid.getDescription(),vid.getPreview(),vid.getChannel().getId());
     }
     //@GetMapping("/getname/{id}")
     //public Channel getByName(@PathVariable String name) {
