@@ -9,7 +9,7 @@ public class Hashtags {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_videos",referencedColumnName = "id")
     private Video video;
     @Column(name="text", nullable = false, length = 250)

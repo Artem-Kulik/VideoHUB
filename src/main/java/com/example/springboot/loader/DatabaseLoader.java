@@ -1,14 +1,8 @@
 package com.example.springboot.loader;
 
 import com.example.springboot.constants.Roles;
-import com.example.springboot.models.Channel;
-import com.example.springboot.models.Role;
-import com.example.springboot.models.User;
-import com.example.springboot.models.Video;
-import com.example.springboot.repositories.ChannelRepository;
-import com.example.springboot.repositories.RoleRepository;
-import com.example.springboot.repositories.UserRepository;
-import com.example.springboot.repositories.VideoRepository;
+import com.example.springboot.models.*;
+import com.example.springboot.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,18 +15,21 @@ public class DatabaseLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ChannelRepository channelRepository;
     private final VideoRepository videoRepository;
+    private final CommentsRepository commentsRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public DatabaseLoader(RoleRepository roleRepository,
                           VideoRepository videoRepository,
                           ChannelRepository channelRepository,
-                          UserRepository userRepository, PasswordEncoder passwordEncoder) {
+                          UserRepository userRepository,
+                          CommentsRepository commentsRepository,PasswordEncoder passwordEncoder) {
         this.roleRepository=roleRepository;
         this.userRepository=userRepository;
         this.videoRepository=videoRepository;
         this.channelRepository=channelRepository;
         this.passwordEncoder = passwordEncoder;
+        this.commentsRepository = commentsRepository;
     }
     @Override
     public void run(String... args) throws Exception {
@@ -49,9 +46,10 @@ public class DatabaseLoader implements CommandLineRunner {
 //                    new User("semen@gmail.com",passwordEncoder.encode("123456"), "blabla")
 //            );
         }
+
+        User user=this.userRepository.findByName("vlad");
         if(this.channelRepository.count()==0)
         {
-            User user=this.userRepository.findByName("vlad");
             this.channelRepository.save(
                     new Channel("animeMad","def.png",user)
             );
@@ -63,6 +61,17 @@ public class DatabaseLoader implements CommandLineRunner {
             );
             this.videoRepository.save(
                     new Video("2.mp4","Джоджо 1 серия 2 сезон","Рус. озвучка , видео взято с сайта jut.su","prev.jpeg",this.channelRepository.findById(1).get())
+            );
+        }
+        Video video1=this.videoRepository.findById(1).get();
+        Video video2=this.videoRepository.findById(2).get();
+        if(this.commentsRepository.count()==0)
+        {
+            this.commentsRepository.save(
+                    new Comment("i have depresion now! thanks!",user,video1)
+            );
+            this.commentsRepository.save(
+                    new Comment("now im gay",user,video2)
             );
         }
     }

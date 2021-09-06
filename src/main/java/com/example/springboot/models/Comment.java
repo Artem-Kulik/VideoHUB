@@ -9,26 +9,30 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(name="text", nullable = false, length = 250)
+    private String text;
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_users",referencedColumnName = "id")
     private User user;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_videos",referencedColumnName = "id")
     private Video video;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_comments",referencedColumnName = "id",nullable = true)
     private Comment reply;
 
     public Comment() {
     }
 
-    public Comment(User user, Video video, Comment reply) {
+    public Comment(String text,User user, Video video, Comment reply) {
+        this.text = text;
         this.user = user;
         this.video = video;
         this.reply = reply;
     }
 
-    public Comment(User user, Video video) {
+    public Comment(String text,User user, Video video) {
+        this.text = text;
         this.user = user;
         this.video = video;
     }
@@ -63,5 +67,13 @@ public class Comment {
 
     public void setReply(Comment reply) {
         this.reply = reply;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
