@@ -51,6 +51,7 @@ public class CommentController {
         repository.delete(repository.findById(id).get());
         return "Success!";
     }
+
     @GetMapping("/vid-com/{id}")
     public List<CommentDto> getVideoComments(@PathVariable int id) {
         Video search = vidrepository.findById(id).get();
@@ -61,4 +62,22 @@ public class CommentController {
         }
         return res;
     }
+
+    @GetMapping("/maincomments/{id}")
+    public List<CommentDto> getMainVideoComments(@PathVariable int id) {
+        Video my_video = vidrepository.findById(id).get();
+        ArrayList<CommentDto> maincomments = new ArrayList<>();
+        try {
+            for (Comment comment : repository.findAllByVideo(my_video)) {
+                if (comment.getReply() == null) {
+                    maincomments.add(new CommentDto(comment.getId(), comment.getText(), comment.getVideo().getId(), (int) comment.getUser().getId(), comment.getReply().getId()));
+                }
+            }
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
+        return maincomments;
+    }
+
 }
