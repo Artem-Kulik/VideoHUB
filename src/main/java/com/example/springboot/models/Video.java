@@ -1,6 +1,7 @@
 package com.example.springboot.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="tbl_videos")
@@ -20,7 +21,9 @@ public class Video {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_channel",referencedColumnName = "id")
     private Channel channel;
-
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name="tbl_likes",referencedColumnName = "id")
+    private List<Like> likes;
     public Video() {
 
     }
@@ -79,5 +82,13 @@ public class Video {
 
     public void setChannel(Channel channel) {
         this.channel = channel;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
     }
 }
