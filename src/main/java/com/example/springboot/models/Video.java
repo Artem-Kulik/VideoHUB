@@ -80,4 +80,6 @@ public class Video {
     public void setChannel(Channel channel) {
         this.channel = channel;
     }
+
+
 }
