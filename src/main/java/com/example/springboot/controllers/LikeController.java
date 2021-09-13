@@ -79,6 +79,24 @@ public class LikeController {
         int res=repository.findAllByVideo(search).size();
         return res;
     }
+    @GetMapping("/remove-video/{id}&{usr}")
+    public int removeLike(@PathVariable int id,@PathVariable String usr){
+        Video search = vidrepository.findById(id).get();
+        User user= userRepository.findByName(usr);
+        List<Like> likes=repository.findAllByVideo(search);
+        Like liked_vid=null;
+        for (Like like:
+                likes) {
+            if(like.getUser().getName()==user.getName())
+                liked_vid=like;
+        }
+        if(liked_vid!=null){
+            repository.delete(liked_vid);
+        }
+
+        int res=repository.findAllByVideo(search).size();
+        return res;
+    }
     @GetMapping("/liked-video/{id}&{usr}")
     public boolean isLiked(@PathVariable int id,@PathVariable String usr){
         Video search = vidrepository.findById(id).get();

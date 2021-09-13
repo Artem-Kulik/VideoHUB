@@ -40,7 +40,11 @@ public class VideoController {
     public List<VideoDto> index() {
         List<Video> rand=(List<Video>)repository.findAll();
         int random = new Random().nextInt();
-        rand=rand.stream().sorted(Comparator.comparingInt(o -> System.identityHashCode(o) ^ random)).collect(Collectors.toList()).subList(0,5);
+        int size=rand.size();
+        if(size>5){
+            size=5;
+        }
+        rand=rand.stream().sorted(Comparator.comparingInt(o -> System.identityHashCode(o) ^ random)).collect(Collectors.toList()).subList(0,size);
 
         List<VideoDto> res=new ArrayList<>();
         for (Video video:
