@@ -1,7 +1,10 @@
 package com.example.springboot.controllers;
 
+import com.example.springboot.dto.ChannelDto;
+import com.example.springboot.dto.CommentDto;
 import com.example.springboot.dto.VideoDto;
 import com.example.springboot.models.Channel;
+import com.example.springboot.models.Comment;
 import com.example.springboot.models.Video;
 import com.example.springboot.repositories.ChannelRepository;
 import com.example.springboot.repositories.UserRepository;
@@ -14,26 +17,38 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/video")
 public class VideoController {
     private final VideoRepository repository;
+    private final ChannelRepository chanrepository;
     private final StorageService service;
     @Autowired
-    public VideoController(VideoRepository repository, StorageService service) {
+    public VideoController(VideoRepository repository, StorageService service,ChannelRepository chanrepository) {
         this.repository = repository;
         this.service = service;
+        this.chanrepository = chanrepository;
     }
-    @GetMapping("/getall")
-    public List<Video> index() {
-        return (List<Video>) repository.findAll();
+    @GetMapping("/search/{search}")
+    public List<VideoDto> searchVideos(@PathVariable String search) {
+        List<VideoDto> res=new ArrayList<>();
+        for (Video video:
+                repository.findAll()) {
+            if(video.getTitle().contains(search)||video.getDescription().contains(search)){
+                ChannelDto chan=new ChannelDto(video.getChannel().getId(),video.getChannel().getHeader_src(),video.getChannel().getName(), (int) video.getChannel().getUser().getId());
+                res.add(new VideoDto(video.getId(),video.getSrc(),video.getTitle(),video.getDescription(),video.getPreview(),chan));
+            }
+        }
+        return res;
     }
     @GetMapping("/get/{id}")
     public VideoDto getById(@PathVariable int id) {
         Video vid=repository.findById(id).get();
-        return new VideoDto(vid.getId(),vid.getSrc(),vid.getTitle(),vid.getDescription(),vid.getPreview(),vid.getChannel().getId());
+        ChannelDto chan=new ChannelDto(vid.getChannel().getId(),vid.getChannel().getHeader_src(),vid.getChannel().getName(), (int) vid.getChannel().getUser().getId());
+        return new VideoDto(vid.getId(),vid.getSrc(),vid.getTitle(),vid.getDescription(),vid.getPreview(),chan);
     }
     //@GetMapping("/getname/{id}")
     //public Channel getByName(@PathVariable String name) {

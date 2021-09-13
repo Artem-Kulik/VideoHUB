@@ -1,7 +1,10 @@
 package com.example.springboot.controllers;
 
+import com.example.springboot.dto.ChannelDto;
+import com.example.springboot.dto.VideoDto;
 import com.example.springboot.models.Channel;
 import com.example.springboot.models.User;
+import com.example.springboot.models.Video;
 import com.example.springboot.repositories.ChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +25,9 @@ public class ChannelController {
         return (List<Channel>) repository.findAll();
     }
     @GetMapping("/get/{id}")
-    public Channel getById(@PathVariable int id) {
-        return repository.findById(id).get();
+    public ChannelDto getById(@PathVariable int id) {
+        Channel channel=repository.findById(id).get();
+        return new ChannelDto(channel.getId(), channel.getHeader_src(), channel.getName(), (int) channel.getUser().getId());
     }
     //@GetMapping("/getname/{id}")
     //public Channel getByName(@PathVariable String name) {
