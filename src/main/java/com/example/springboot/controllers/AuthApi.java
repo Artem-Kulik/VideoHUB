@@ -6,7 +6,9 @@ import com.example.springboot.dto.AuthRequest;
 import com.example.springboot.dto.RegisterRequest;
 import com.example.springboot.dto.ResponseDto;
 import com.example.springboot.dto.UserView;
+import com.example.springboot.models.Channel;
 import com.example.springboot.models.Role;
+import com.example.springboot.repositories.ChannelRepository;
 import com.example.springboot.repositories.RoleRepository;
 import org.springframework.security.core.userdetails.User;
 import com.example.springboot.repositories.UserRepository;
@@ -34,6 +36,7 @@ public class AuthApi {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserRepository userRepository;
+    private final ChannelRepository channelRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -77,6 +80,8 @@ public class AuthApi {
                         );
 
                 userRepository.save(dbUser);
+                Channel channel = new Channel(dbUser.getName(),"prev.jpeg",dbUser);
+                channelRepository.save(channel);
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
             else{

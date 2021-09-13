@@ -5,6 +5,7 @@ import com.example.springboot.dto.CommentDto;
 import com.example.springboot.dto.VideoDto;
 import com.example.springboot.models.Channel;
 import com.example.springboot.models.Comment;
+import com.example.springboot.models.User;
 import com.example.springboot.models.Video;
 import com.example.springboot.repositories.ChannelRepository;
 import com.example.springboot.repositories.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -103,4 +105,12 @@ public class VideoController {
                 "filename=\"" + file.getFilename() + "\"").body(file);
 
     }
+//    @PostMapping("/add-video/{id}")
+//    public String icon(@PathVariable int id,@RequestParam("file") MultipartFile file){
+//        service.store(file);
+//        User user=repository.findById((long) id).get();
+//        user.setIcon(file.getOriginalFilename());
+//        repository.save(user);
+//        return file.getOriginalFilename();
+//    }
 }
