@@ -18,7 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/video")
@@ -32,6 +35,22 @@ public class VideoController {
         this.service = service;
         this.chanrepository = chanrepository;
     }
+
+    @GetMapping("/getall")
+    public List<VideoDto> index() {
+        List<Video> rand=(List<Video>)repository.findAll();
+        int random = new Random().nextInt();
+        rand=rand.stream().sorted(Comparator.comparingInt(o -> System.identityHashCode(o) ^ random)).collect(Collectors.toList()).subList(0,5);
+
+        List<VideoDto> res=new ArrayList<>();
+        for (Video video:
+                rand) {
+                ChannelDto chan=new ChannelDto(video.getChannel().getId(),video.getChannel().getHeader_src(),video.getChannel().getName(), (int) video.getChannel().getUser().getId());
+                res.add(new VideoDto(video.getId(),video.getSrc(),video.getTitle(),video.getDescription(),video.getPreview(),chan));
+        }
+        return res;
+    }
+
     @GetMapping("/search/{search}")
     public List<VideoDto> searchVideos(@PathVariable String search) {
         List<VideoDto> res=new ArrayList<>();
