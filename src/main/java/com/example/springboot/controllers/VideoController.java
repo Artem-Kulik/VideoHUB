@@ -11,18 +11,20 @@ import com.example.springboot.repositories.ChannelRepository;
 import com.example.springboot.repositories.UserRepository;
 import com.example.springboot.repositories.VideoRepository;
 import com.example.springboot.storage.StorageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -105,12 +107,20 @@ public class VideoController {
                 "filename=\"" + file.getFilename() + "\"").body(file);
 
     }
-//    @PostMapping("/add-video/{id}")
-//    public String icon(@PathVariable int id,@RequestParam("file") MultipartFile file){
-//        service.store(file);
-//        User user=repository.findById((long) id).get();
-//        user.setIcon(file.getOriginalFilename());
-//        repository.save(user);
-//        return file.getOriginalFilename();
-//    }
+    @PostMapping("/upload")
+    public ResponseEntity icon(@RequestParam("video_inf")String vid_inf,@RequestParam("video") MultipartFile video,@RequestParam("preview") MultipartFile preview) throws IOException {
+        Gson gson = new Gson();
+        VideoDto inf=gson.fromJson(vid_inf, VideoDto.class);
+
+        String file_vid= UUID.randomUUID().toString();
+        String file_prew= UUID.randomUUID().toString();
+        service.store(video,file_vid);
+        service.store(preview,file_prew);
+        String ext_v= FilenameUtils.getExtension(video.getOriginalFilename());
+        String ext_p= FilenameUtils.getExtension(video.getOriginalFilename());
+        Channel channel=chanrepository.findById(inf.getId()).get();
+        Video vid=new Video(file_vid+ext_v,inf.getTitle(),inf.getDescription(),file_prew+ext_p,channel);
+        repository.save(vid);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

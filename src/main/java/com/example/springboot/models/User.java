@@ -29,6 +29,14 @@ public class User {
     @Column(name="gender", nullable = false, length = 1024)
     private String gender;
 
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_channel",referencedColumnName = "id")
     private Channel channel;

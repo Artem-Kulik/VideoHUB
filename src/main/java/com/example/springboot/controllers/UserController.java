@@ -19,6 +19,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 //import static jdk.jpackage.internal.IOUtils.*;
 
@@ -55,7 +56,8 @@ public class UserController  {
 
     @PostMapping("/add-icon/{id}")
     public String icon(@PathVariable int id,@RequestParam("file") MultipartFile file){
-        service.store(file);
+        String filename= UUID.randomUUID().toString();
+        service.store(file,filename);
         User user=repository.findById((long) id).get();
         user.setIcon(file.getOriginalFilename());
         repository.save(user);

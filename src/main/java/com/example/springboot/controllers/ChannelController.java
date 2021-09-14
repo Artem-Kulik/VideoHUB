@@ -6,6 +6,7 @@ import com.example.springboot.models.Channel;
 import com.example.springboot.models.User;
 import com.example.springboot.models.Video;
 import com.example.springboot.repositories.ChannelRepository;
+import com.example.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,11 @@ import java.util.List;
 @RequestMapping("/channel")
 public class ChannelController {
     private final ChannelRepository repository;
+    private final UserRepository userRepository;
     @Autowired
-    public ChannelController(ChannelRepository repository) {
+    public ChannelController(ChannelRepository repository,UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/getall")
@@ -27,6 +30,11 @@ public class ChannelController {
     @GetMapping("/get/{id}")
     public ChannelDto getById(@PathVariable int id) {
         Channel channel=repository.findById(id).get();
+        return new ChannelDto(channel.getId(), channel.getHeader_src(), channel.getName(), (int) channel.getUser().getId());
+    }
+    @GetMapping("/get-user/{id}")
+    public ChannelDto getByUserId(@PathVariable int id) {
+        Channel channel=userRepository.findById((long) id).get().getChannel();
         return new ChannelDto(channel.getId(), channel.getHeader_src(), channel.getName(), (int) channel.getUser().getId());
     }
     //@GetMapping("/getname/{id}")
