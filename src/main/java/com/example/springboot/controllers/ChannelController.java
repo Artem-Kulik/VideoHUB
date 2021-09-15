@@ -34,7 +34,8 @@ public class ChannelController {
     }
     @GetMapping("/get-user/{id}")
     public ChannelDto getByUserId(@PathVariable int id) {
-        Channel channel=userRepository.findById((long) id).get().getChannel();
+        User user=userRepository.findById((long) id).get();
+        Channel channel=repository.findByUser(user);
         return new ChannelDto(channel.getId(), channel.getHeader_src(), channel.getName(), (int) channel.getUser().getId());
     }
     //@GetMapping("/getname/{id}")
