@@ -58,7 +58,7 @@ public class VideoController {
         for (Video video:
                 rand) {
                 ChannelDto chan=new ChannelDto(video.getChannel().getId(),video.getChannel().getHeader_src(),video.getChannel().getName(), (int) video.getChannel().getUser().getId());
-                res.add(new VideoDto(video.getId(),video.getSrc(),video.getTitle(),video.getDescription(),video.getPreview(),chan));
+                res.add(new VideoDto(video.getId(),video.getSrc(),video.getTitle(),video.getDescription(),video.getPreview(),chan,video.getCreatedAt()));
         }
         return res;
     }
@@ -95,7 +95,20 @@ public class VideoController {
                 repository.findAll()) {
             if(video.getTitle().contains(search)||video.getDescription().contains(search)){
                 ChannelDto chan=new ChannelDto(video.getChannel().getId(),video.getChannel().getHeader_src(),video.getChannel().getName(), (int) video.getChannel().getUser().getId());
-                res.add(new VideoDto(video.getId(),video.getSrc(),video.getTitle(),video.getDescription(),video.getPreview(),chan));
+                res.add(new VideoDto(video.getId(),video.getSrc(),video.getTitle(),video.getDescription(),video.getPreview(),chan,video.getCreatedAt()));
+            }
+        }
+        return res;
+    }
+    @GetMapping("/user/{username}")
+    public List<VideoDto> userVideos(@PathVariable String username) {
+        List<VideoDto> res=new ArrayList<>();
+        for (Video video:
+                repository.findAll()) {
+            String user=video.getChannel().getUser().getName();
+            if(user.equalsIgnoreCase(username)){
+                ChannelDto chan=new ChannelDto(video.getChannel().getId(),video.getChannel().getHeader_src(),video.getChannel().getName(), (int) video.getChannel().getUser().getId());
+                res.add(new VideoDto(video.getId(),video.getSrc(),video.getTitle(),video.getDescription(),video.getPreview(),chan,video.getCreatedAt()));
             }
         }
         return res;
@@ -104,7 +117,7 @@ public class VideoController {
     public VideoDto getById(@PathVariable int id) {
         Video vid=repository.findById(id).get();
         ChannelDto chan=new ChannelDto(vid.getChannel().getId(),vid.getChannel().getHeader_src(),vid.getChannel().getName(), (int) vid.getChannel().getUser().getId());
-        return new VideoDto(vid.getId(),vid.getSrc(),vid.getTitle(),vid.getDescription(),vid.getPreview(),chan);
+        return new VideoDto(vid.getId(),vid.getSrc(),vid.getTitle(),vid.getDescription(),vid.getPreview(),chan,vid.getCreatedAt());
     }
     //@GetMapping("/getname/{id}")
     //public Channel getByName(@PathVariable String name) {

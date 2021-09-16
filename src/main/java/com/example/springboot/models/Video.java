@@ -1,6 +1,9 @@
 package com.example.springboot.models;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,6 +27,14 @@ public class Video {
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name="tbl_likes",referencedColumnName = "id")
     private List<Like> likes;
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Date createdAt;
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
     public Video() {
 
     }
@@ -34,6 +45,7 @@ public class Video {
         this.description = description;
         this.preview = preview;
         this.channel = channel;
+        this.createdAt=new Date();
     }
 
     public int getId() {

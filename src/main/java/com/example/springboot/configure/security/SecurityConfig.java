@@ -96,6 +96,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/channel/get/**").permitAll()
                 .antMatchers("/comment/vid-com/**").permitAll()
                 .antMatchers("/like/getvideo/**").permitAll()
+                .antMatchers("/video/search/**").permitAll()
+                .antMatchers("/video/getall").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
 //                .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()
