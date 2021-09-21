@@ -1,10 +1,13 @@
 package com.example.springboot.configure.security;
 
 import com.example.springboot.models.User;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.StringReader;
 import java.util.Date;
 import static java.lang.String.format;
 
@@ -15,11 +18,22 @@ public class JwtTokenUtil {
     private final String jwtSecret = "zdtlD3JK56m6wTTgsNFhqzjqP";
     private final String jwtIssuer = "example.io";
 
+
     public String generateAccessToken(User user) {
+        String[] userRoles=user.getRoles().stream()
+                .map((role -> role.getName())).toArray(String []::new);
+
+        Gson gson = new Gson();
+        String roles=gson.toJson(userRoles);
+
         return Jwts.builder()
                 .setSubject(format("%s", user.getId()))
                 .claim("icon",user.getIcon())
                 .claim("name",user.getName())
+                .claim("gender",user.getGender())
+                .claim("phone",user.getPhone())
+                .claim("birth",user.getBirthday().toString())
+                .claim("roles",roles)
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
